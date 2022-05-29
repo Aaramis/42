@@ -7,20 +7,23 @@
 # SOURCES
 SRCS_PATH	:=	./SOURCES/
 FILES		:=
+CHECK_F		:=
 
 # INCLUDES
 INCLUDES_PATH	:=	./INCLUDES/
 LIBFT_PATH	:=	$(INCLUDES_PATH)libft
+LIB_PATH	:=	$(LIBFT_PATH)/$(NAME_LIB)
 
 # OUTPUT
 NAME_LIB	:=	libft.a
 NAME		:=	push_swap
+CHECKER		:=	checker
 
 # COMPILATORS
 LFGLAGS		:=	-I $(LIBFT_PATH)
 IFLAGS		:=	-I $(INCLUDES_PATH) $(LGFLAGS)
-CFLAGS		:=	-Wall -Werror -Wextra $(IFLAGS)
 OPT		:=	-O3
+CFLAGS		:=	-Wall -Werror -Wextra $(IFLAGS) $(OPT)
 CC		:=	gcc
 LEAKS		:=	fsanitize=address
 RM		:=	rm -f
@@ -44,6 +47,8 @@ EOC 		:=	"\033[0;0m"
 
 SRCS		:=	$(addprefix $(SRCS_PATH),$(addsuffix .c,$(FILES)))
 OBJS		:=	$(addprefix $(SRCS_PATH),$(addsuffix .o,$(FILES)))
+SRCS_CHECK	:=	$(addprefix $(SRCS_PATH),$(addsuffix .c,$(CHECK_F)))
+OBJS_CHECK	:=	$(addprefix $(SRCS_PATH),$(addsuffix .o,$(CHECK_F)))
 
 #####################
 ###      BASH     ###
@@ -54,7 +59,7 @@ all:		$(NAME)
 
 $(NAME):	$(OBJS)
 		cd $(LIBFT_PATH) && $(MAKE)
-		$(CC) $(CFLAGS) $(OPT) $(LIBFT_PATH)/$(NAME_LIB) $(OBJS) -o $(NAME)
+		$(CC) $(CFLAGS) $(LIB_PATH) $(OBJS) -o $(NAME)
 
 .o:
 		@echo $(PURPLE) "Compiling $< into $@" $(EOC)
@@ -63,9 +68,6 @@ $(NAME):	$(OBJS)
 .c:
 		@echo $(RED)  "Missing file $@" $(EOC)
 
-#clean:
-#		$(RM) $(OBJS)
-#		cd $(LIBFT_PATH) && $(MAKE) clean
 clean:
 		$(RM) $(OBJS)
 		cd $(LIBFT_PATH) && $(MAKE) clean
@@ -76,4 +78,8 @@ fclean:		clean
 
 re:		fclean $(NAME)
 
-.PHONY:		all clean fclean re
+bonus:		$(OBJS_CHECK)
+		cd $(LIBFT_PATH) && $(MAKE)
+		$(CC) $(CFLAGS) $(LIB_PATH) $(OBJS_CHECK) -o $(NAME)
+
+.PHONY:		all clean fclean re bonus
