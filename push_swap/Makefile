@@ -6,24 +6,24 @@
 
 # SOURCES
 SRCS_PATH	:=	./SOURCES/
-FILES		:=
-CHECK_F		:=
+FILES		:=	push_swap
+CHECK_F		:=	checker
 
 # INCLUDES
 INCLUDES_PATH	:=	./INCLUDES/
 LIBFT_PATH	:=	$(INCLUDES_PATH)libft
-LIB_PATH	:=	$(LIBFT_PATH)/$(NAME_LIB)
 
 # OUTPUT
 NAME_LIB	:=	libft.a
 NAME		:=	push_swap
 CHECKER		:=	checker
+LIB_PATH	:=	$(LIBFT_PATH)/$(NAME_LIB)
 
 # COMPILATORS
-LFGLAGS		:=	-I $(LIBFT_PATH)
-IFLAGS		:=	-I $(INCLUDES_PATH) $(LGFLAGS)
+LFLAGS		:=	-I $(LIBFT_PATH)
+IFLAGS		:=	-I $(INCLUDES_PATH) $(LFLAGS)
 OPT		:=	-O3
-CFLAGS		:=	-Wall -Werror -Wextra $(IFLAGS) $(OPT)
+CFLAGS		:=	-Wall -Werror -Wextra $(OPT) $(IFLAGS)
 CC		:=	gcc
 LEAKS		:=	fsanitize=address
 RM		:=	rm -f
@@ -73,13 +73,13 @@ clean:
 		cd $(LIBFT_PATH) && $(MAKE) clean
 
 fclean:		clean
-		@$(RM) $(NAME)
+		@$(RM) $(NAME) $(CHECKER)
 		@cd $(LIBFT_PATH) && $(MAKE) fclean
 
 re:		fclean $(NAME)
 
 bonus:		$(OBJS_CHECK)
 		cd $(LIBFT_PATH) && $(MAKE)
-		$(CC) $(CFLAGS) $(LIB_PATH) $(OBJS_CHECK) -o $(NAME)
+		$(CC) $(CFLAGS) $(LIB_PATH) $(OBJS_CHECK) -o $(CHECKER)
 
 .PHONY:		all clean fclean re bonus
